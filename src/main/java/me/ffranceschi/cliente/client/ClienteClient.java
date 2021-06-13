@@ -124,9 +124,18 @@ public class ClienteClient {
         });
 
         Arrays.asList("Fernando", "Priscila", "Katherine").forEach(
-                name -> requestStreamObserver.onNext(BiDiClienteRequest.newBuilder()
-                        .setCliente(Cliente.newBuilder().setNome(name)).build())
-        );
+                nome -> {
+                    System.out.println("Enviando o nome: " + nome);
+                    requestStreamObserver.onNext(BiDiClienteRequest.newBuilder()
+                            .setCliente(Cliente.newBuilder().setNome(nome)).build());
+                    // Conseguimos ver isso funcionando exatamente
+//                    try {
+//                        Thread.sleep(100);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
+                });
         requestStreamObserver.onCompleted();
         try {
             latch.await(3L, TimeUnit.SECONDS);
