@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package ffranceschi;
+
+option java_package = "me.ffranceschi.cliente";
+option java_multiple_files = true;
+
+message Cliente {
+  string nome = 1;
+  string cpf = 2;
+  int32 telefone = 3;
+}
+
+message ClienteRequest {
+  Cliente cliente = 1;
+}
+
+message ClienteResponse {
+  string result = 1;
+}
+
+message ClienteMultiplasVezesRequest {
+  Cliente cliente = 1;
+}
+
+message ClienteMultiplasVezesResponse {
+  string result = 1;
+}
+
+message VariasChamadasClienteRequest {
+  Cliente cliente = 1;
+}
+
+message VariasChamadasClienteResponse {
+  string result = 1;
+}
+
+service ClienteService {
+  // Unary
+  rpc Cliente(ClienteRequest) returns (ClienteResponse) {};
+
+  // Server Streaming
+  rpc ClienteMultiplasVezes(ClienteMultiplasVezesRequest) returns (stream ClienteMultiplasVezesResponse) {};
+
+  // Client Streaming
+  rpc VariasChamadasCliente(stream VariasChamadasClienteRequest) returns (VariasChamadasClienteResponse) {};
+
+}
