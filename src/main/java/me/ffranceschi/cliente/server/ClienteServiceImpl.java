@@ -19,6 +19,7 @@ public class ClienteServiceImpl extends ClienteServiceGrpc.ClienteServiceImplBas
         responseObserver.onCompleted();
     }
 
+    // Server streaming
     @Override
     public void clienteMultiplasVezes(ClienteMultiplasVezesRequest request, StreamObserver<ClienteMultiplasVezesResponse> responseObserver) {
         String nome = request.getCliente().getNome();
@@ -40,10 +41,10 @@ public class ClienteServiceImpl extends ClienteServiceGrpc.ClienteServiceImplBas
         }
     }
 
-
+    // Client Streaming
     @Override
     public StreamObserver<VariasChamadasClienteRequest> variasChamadasCliente(StreamObserver<VariasChamadasClienteResponse> responseObserver) {
-        StreamObserver<VariasChamadasClienteRequest> streamObserver = new StreamObserver<VariasChamadasClienteRequest>() {
+        StreamObserver<VariasChamadasClienteRequest> requestStreamObserver = new StreamObserver<VariasChamadasClienteRequest>() {
             String result = "";
             @Override
             public void onNext(VariasChamadasClienteRequest variasChamadasClienteRequest) {
@@ -63,6 +64,30 @@ public class ClienteServiceImpl extends ClienteServiceGrpc.ClienteServiceImplBas
                 responseObserver.onCompleted();
             }
         };
-        return streamObserver;
+        return requestStreamObserver;
+    }
+
+    @Override
+    public StreamObserver<BiDiClienteRequest> biDiCliente(StreamObserver<BiDiClienteResponse> responseObserver) {
+        StreamObserver<BiDiClienteRequest> requestStreamObserver = new StreamObserver<BiDiClienteRequest>() {
+            @Override
+            public void onNext(BiDiClienteRequest biDiClienteRequest) {
+                String result = "Cliente eh: " + biDiClienteRequest.getCliente().getNome();
+                BiDiClienteResponse biDiClienteResponse = BiDiClienteResponse.newBuilder()
+                        .setResult(result).build();
+                responseObserver.onNext(biDiClienteResponse);
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+                responseObserver.onCompleted();
+            }
+        };
+        return requestStreamObserver;
     }
 }

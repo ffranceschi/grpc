@@ -35,6 +35,15 @@ message VariasChamadasClienteResponse {
   string result = 1;
 }
 
+message BiDiClienteRequest {
+  Cliente cliente = 1;
+}
+
+message BiDiClienteResponse {
+  string result = 1;
+}
+
+
 service ClienteService {
   // Unary
   rpc Cliente(ClienteRequest) returns (ClienteResponse) {};
@@ -44,5 +53,8 @@ service ClienteService {
 
   // Client Streaming
   rpc VariasChamadasCliente(stream VariasChamadasClienteRequest) returns (VariasChamadasClienteResponse) {};
+
+  // Bi direcional (stream client e server)
+  rpc BiDiCliente(stream BiDiClienteRequest) returns (stream BiDiClienteResponse) {};
 
 }
